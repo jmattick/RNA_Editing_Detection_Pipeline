@@ -26,5 +26,5 @@ else:
                 SRR.append(line.strip()) #add each accession number to SRR list
 
     for acc in SRR: #loop through acc numbers
-        os.system('fastqc -O '+str(out_path) + acc+'.fastq') #call fastqc command to perform quality control in data folder
+        os.system('fastqc -O '+str(out_path) + ' ' + acc+'.fastq') #call fastqc command to perform quality control in data folder
         
