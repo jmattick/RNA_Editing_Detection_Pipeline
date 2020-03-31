@@ -1,0 +1,8 @@
+genome	ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/GRCh37_mapping/GRCh37.primary_assembly.genome.fa.gz
+genome_annotation	ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/GRCh37_mapping/gencode.v30lift37.annotation.gtf.gz
+strand_detection	https://sourceforge.net/projects/rseqc/files/BED/Human_Homo_sapiens/hg19_RefSeq.bed.gz
+rmsk	http://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/rmsk.txt.gz
+dbSNP	http://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/snp151.txt.gz
+rediportal_db	http://srv00.recas.ba.infn.it/webshare/rediportalDownload/table1_full.txt.gz
+
+
