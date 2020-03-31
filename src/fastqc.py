@@ -5,26 +5,22 @@ import sys # import sys to use parameters
 
 params = sys.argv # get list of parameters
 
-acc_list = None # initialize path to file containing accession numbers
+data_list = None # initialize path to directory containing fastq files
 out_path = None # initialize path to output directory
 
 for i in range(len(params)-1): # loop through parameters
-    if params[i] == '-a' or params[i] == '--acc_list':
-        acc_list = params[i+1] # set acc list
+    if params[i] == '-a' or params[i] == '--data_list':
+        data_list = params[i+1] # set acc list
     if params[i] == '-o' or params[i] == '--output':
         out_path = params[i+1] # set output directory
 
-if acc_list == None or out_path == None : #check that parameters have been set
+if data_list == None or out_path == None : #check that parameters have been set
     print('Error: Invalid input parameters. \nSet path to accession list with -a or --acc_list parameters. \nSet output path with -o or --output.') #error to output
 
 else:
-    SRR = [] #list to store SRR numbers
-
-    with open(acc_list, 'r') as f: #open file containing accession numbers
-        for line in f:
-            if line.startswith("SRR") or line.startswith("ERR"):
-                SRR.append(line.strip()) #add each accession number to SRR list
-
-    for acc in SRR: #loop through acc numbers
-        os.system('fastqc -O '+str(out_path) + ' ' + acc+'.fastq') #call fastqc command to perform quality control in data folder
         
+    for filename in os.listdir(data_list):
+        if filename.endswith(".fastq"): 
+            os.system('fastqc -O '+str(out_path) + ' ' + filename) #call fastqc command to perform quality control in data folder 
+        else:
+            continue
