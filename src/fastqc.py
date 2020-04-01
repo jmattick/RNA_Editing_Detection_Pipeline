@@ -1,26 +1,40 @@
 #!/usr/bin/python3
 
-import os # import os
-import sys # import sys to use parameters
+import os
+import sys
 
-params = sys.argv # get list of parameters
+params = sys.argv # get parameters
 
-data_list = None # initialize path to directory containing fastq files
-out_path = None # initialize path to output directory
+fastq_dir = None # path to fastq directory
+output = None # path to output directory
+se = False # single end data boolean
 
-for i in range(len(params)-1): # loop through parameters
-    if params[i] == '-a' or params[i] == '--data_list':
-        data_list = params[i+1] # set acc list
-    if params[i] == '-o' or params[i] == '--output':
-        out_path = params[i+1] # set output directory
+# Loop through parameters
+for i in range(len(params)-1):
+        if params[i] == '-f' or params[i] == '--fastq_dir':
+                fastq_dir = params[i + 1]
+        elif params[i] == '-o' or params[i] == '--output':
+                output = params[i + 1]
+        elif params[i] == '-se' or params[i] == '--single_end':
+                se = True
 
-if data_list == None or out_path == None : #check that parameters have been set
-    print('Error: Invalid input parameters. \nSet path to accession list with -a or --acc_list parameters. \nSet output path with -o or --output.') #error to output
+# Confirm parameters set
+if fastq_dir == None or output == None:
+        print('Error: Invalid input parameters. \nSet fastq directory with -f or --fastq_dir. \nSet output directory with -o or --output.')
+        sys.exit()
 
-else:
-        
-    for filename in os.listdir(data_list):
-        if filename.endswith(".fastq"): 
-            os.system('fastqc -O '+str(out_path) + ' ' + filename) #call fastqc command to perform quality control in data folder 
+# Loop through files in fastq directory
+for file in os.listdir(str(fastq_dir)):
+        if file.endswith('_1.fastq') and not se: # if first paired-end file
+                base = file.split('_1.fastq')[0]
+                r1 = str(fastq_dir) + str(base) + '_1.fastq'
+                r2 = str(fastq_dir) + str(base) + '_2.fastq'
+                os.system('fastqc -o ' + str(output) + ' ' + str(r1) + ' ' + str(r2)) # PE fastqc command
+        elif file.endswith('_2.fastq'): # if second paired-end file
+                pass # ignore
+        elif file.endswith('.fastq'): # if single-end data
+                base = file.split('.fastq')[0]
+                r1 = str(fastq_dir) + str(base) + '.fastq'
+                os.system('fastqc -o ' + str(output) + ' ' + str(r1)) # SE fastqc command
         else:
-            continue
+                print(str(file) + ' is not a fastq file')
