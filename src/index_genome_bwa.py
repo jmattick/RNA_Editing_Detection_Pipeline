@@ -19,7 +19,7 @@ for i in range(len(params)-1):
             output = output + '/'
 
 print('Indexing genome: ')
-cmd = 'bwa index ' +  + str(fasta)
+cmd = 'bwa index ' + str(fasta)
 print(cmd)
 
 os.system(str(cmd))
