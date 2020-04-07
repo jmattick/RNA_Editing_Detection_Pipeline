@@ -16,7 +16,7 @@ for i in range(len(params)-1): #loop through parameters
     
 
 if fastq_dir == None or fasta_dir == None:
-    print('Error: Invalid input parameters. \nSet fastq directory with -f or --fastq_dir.\nSet path to directory containing genome index with -g or --genome_acc.\nSet path to result output directory with -o or --output.')
+    print('Error: Invalid input parameters. \nSet fastq directory with -f or --fastq_dir.\nSet path to directory containing genome fasta file with -fa or --fasta_dir.')
 
 else:
 
