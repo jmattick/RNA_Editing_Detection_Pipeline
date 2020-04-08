@@ -126,3 +126,6 @@ os.system("tabix -p gff" + str(rediportal_db_dir) + 'srtd_atlas_recoding.gff')
 
 # Create the nochr file for REDItools
 os.system('grep \">\" ' + str(genome_dir) + str(genome) + ' | awk \'{if (substr($1,1,3)==\">GL\" print $2}\'' + ' > ' + str(genome_dir) + 'nochr')
+
+# Index the reference genome for REDItools
+os.system('samtools faidx ' + str(genome_dir) + str(genome)) # Should the path and name of the output file be defined??
