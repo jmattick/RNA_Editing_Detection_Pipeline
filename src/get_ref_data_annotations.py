@@ -96,7 +96,7 @@ rmsk_gtf_file_name = rmsk_file_name.split('.txt')[0] + '.gtf' # creates gtf file
 rmsk_sorted_gtf_file_name = rmsk_file_name.split('.txt')[0] + '.sorted.gtf'
 rmsk_sorted_gtf_gz_file_name = rmsk_file_name.split('.txt')[0] + '.sorted.gtf.gz'
 
-os.system('awk \'OFS=\"\t\"{print $6, \"rmsk_hg19\",$12,$7+1,$8,\".\",$10,\".\",\"gene_id \"\"$11\"\"; transcript_id \"\"$13\"\";\"}\' ' + str(rmsk_dir) + str(rmsk_file_name) + " > " + str(rmsk_dir) + str(rmsk_gtf_file_name)) # creates gtf file  
+os.system('awk \'OFS=\"\t\"{print $6, \"rmsk_hg19\",$12,$7+1,$8,\".\",$10,\".\",\"gene_id \\"\"$11\"\\"; transcript_id \\"\"$13\"\\";\"}\' ' + str(rmsk_dir) + str(rmsk_file_name) + " > " + str(rmsk_dir) + str(rmsk_gtf_file_name)) # creates gtf file  
 os.system("sort -k1,1 -k4,4n " + str(rmsk_dir) + str(rmsk_gtf_file_name) + ' > ' + str(rmsk_dir) + str(rmsk_sorted_gtf_file_name)) # creates sorted gtf file
 os.system("bgzip -p gff " + str(rmsk_dir) + str(rmsk_sorted_gtf_file_name))
 os.system("tabix -p gff " + str(rmsk_dir) + str(rmsk_sorted_gtf_gz_file_name))
@@ -108,7 +108,7 @@ dbSNP_gtf_file_name = dbSNP_file_name.split('.txt')[0] + '.gtf' # creates gtf fi
 dbSNP_sorted_gtf_file_name = dbSNP_file_name.split('.txt')[0] + '.sorted.gtf'
 dbSNP_sorted_gtf_gz_file_name = dbSNP_file_name.split('.txt')[0] + '.sorted.gtf.gz'
 
-os.system('awk \'OFS=\"\t\"{if ($11==\"genomic\" && $12==\"single\") print $2,\"ucsc_snp151_hg19\",\"snp\",$4,$4,\".\",$7,\".\",\"gene_id \"\"$5\"\"; transcript_id \"\"$5\"\";\"}\' ' + str(dbSNP_dir) + str(dbSNP_file_name) + " > " + str(dbSNP_dir) + str(dbSNP_sorted_gtf_file_name)) # creates gtf file  
+os.system('awk \'OFS=\"\t\"{if ($11==\"genomic\" && $12==\"single\") print $2,\"ucsc_snp151_hg19\",\"snp\",$4,$4,\".\",$7,\".\",\"gene_id \\"\"$5\"\\"; transcript_id \\"\"$5\"\\";\"}\' ' + str(dbSNP_dir) + str(dbSNP_file_name) + " > " + str(dbSNP_dir) + str(dbSNP_sorted_gtf_file_name)) # creates gtf file  
 os.system("sort -k1,1 -k4,4n " + str(dbSNP_dir) + str(dbSNP_gtf_file_name) + ' > ' + str(dbSNP_dir) + str(dbSNP_sorted_gtf_file_name)) # creates sorted gtf file
 os.system("bgzip -p gff " + str(dbSNP_dir) + str(dbSNP_sorted_gtf_file_name))
 os.system("tabix -p gff " + str(dbSNP_dir) + str(dbSNP_sorted_gtf_gz_file_name))
@@ -118,7 +118,7 @@ rediportal_db_file_name = rediportal_db.split('/')[-1] #gets text after last / i
 atlas_gtf_file_name = 'atlas.gtf'
 atlas_gtf_gz_file_name = atlas_gtf_file_name + '.gz'
 
-os.system('awk \'OFS=\"\t\"{sum+=1; print $1,\"rediportal\",\"ed\",$2,$2,\".\",$5,\".\"gene_id \"\"sum\"\"; transcript_id \"\"sum\"\";\"}\' ' + str(rediportal_db_dir) + str(rediportal_db_file_name) + " > " + str(rediportal_db_dir) + str(atlas_gtf_file_name))
+os.system('awk \'OFS=\"\t\"{sum+=1; print $1,\"rediportal\",\"ed\",$2,$2,\".\",$5,\".\"gene_id \\"\"sum\"\\"; transcript_id \\"\"sum\"\\";\"}\' ' + str(rediportal_db_dir) + str(rediportal_db_file_name) + " > " + str(rediportal_db_dir) + str(atlas_gtf_file_name))
 os.system('python3 ' + str(rediportal2recoding) + 'rediportal2recoding.py' + ' ' + str(rediportal_db_dir) + str(rediportal_db_file_name) + ' > ' + str(rediportal_db_dir) + 'atlas_recoding.gff')
 os.system("sort -k1,1 -k4,4n " + str(rediportal_db_dir) + 'atlas_recoding.gff' + ' > ' + str(rediportal_db_dir) + 'srtd_atlas_recoding.gff') # creates sorted gtf file
 os.system("bgzip" + str(rediportal_db_dir) + 'srtd_atlas_recoding.gff')
