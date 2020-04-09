@@ -103,7 +103,7 @@ os.system("tabix -p gff " + str(rmsk_dir) + str(rmsk_sorted_gtf_gz_file_name))
 
 download_data(dbSNP_dir, dbSNP)
 
-dnSNP_file_name = dbSNP.split('/')[-1] #gets text after last / in url
+dbSNP_file_name = dbSNP.split('/')[-1] #gets text after last / in url
 dbSNP_gtf_file_name = dbSNP_file_name.split('.txt')[0] + '.gtf' # creates gtf file name from txt file name
 dbSNP_sorted_gtf_file_name = dbSNP_file_name.split('.txt')[0] + '.sorted.gtf'
 dbSNP_sorted_gtf_gz_file_name = dbSNP_file_name.split('.txt')[0] + '.sorted.gtf.gz'
