@@ -24,7 +24,7 @@ import sys, os, time, math, random, getopt, operator, string, errno
 try: import pysam
 except: sys.exit('Pysam module not found.')
 from multiprocessing import Process, Queue
-from Queue import Empty
+from queue import Empty
 
 pysamVersion=pysam.__version__
 
