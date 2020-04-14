@@ -13,7 +13,6 @@ strand_detection = None # refseq annotation file (bed)
 rmsk = None # repeat master annotations
 dbSNP = None # dbSNP annotations
 rediportal_db = None #REDIportal annotations
-rediportal2recoding = None # path to rediportal2recoding.py
 
 #loop through input parameters 
 for i in range(len(params)-1):
@@ -47,8 +46,7 @@ with open(in_file, 'r') as f:
                dbSNP = v
            elif k == "rediportal_db":
                rediportal_db = v
-           elif k == "rediportal2recoding":
-               rediportal2recoding = v
+       
 
 def make_dir(path):
     """Function to make a directory if it does not exist"""
@@ -119,7 +117,7 @@ atlas_gtf_file_name = 'atlas.gtf'
 atlas_gtf_gz_file_name = atlas_gtf_file_name + '.gz'
 
 os.system('awk \'OFS=\"\t\"{sum+=1; print $1,\"rediportal\",\"ed\",$2,$2,\".\",$5,\".\"gene_id \\"\"sum\"\\"; transcript_id \\"\"sum\"\\";\"}\' ' + str(rediportal_db_dir) + str(rediportal_db_file_name) + " > " + str(rediportal_db_dir) + str(atlas_gtf_file_name))
-os.system('python3 ' + str(rediportal2recoding) + 'rediportal2recoding.py' + ' ' + str(rediportal_db_dir) + str(rediportal_db_file_name) + ' > ' + str(rediportal_db_dir) + 'atlas_recoding.gff')
+os.system('python3 REDItools_python3/accessory/rediportal2recoding.py' + ' ' + str(rediportal_db_dir) + str(rediportal_db_file_name) + ' > ' + str(rediportal_db_dir) + 'atlas_recoding.gff')
 os.system("sort -k1,1 -k4,4n " + str(rediportal_db_dir) + 'atlas_recoding.gff' + ' > ' + str(rediportal_db_dir) + 'srtd_atlas_recoding.gff') # creates sorted gtf file
 os.system("bgzip" + str(rediportal_db_dir) + 'srtd_atlas_recoding.gff')
 os.system("tabix -p gff" + str(rediportal_db_dir) + 'srtd_atlas_recoding.gff')
