@@ -10,7 +10,7 @@ fasta_dir = None # path to genome fasta file
 # Loop through parameters
 for i in range(len(params)-1):
     if params[i] == '-f' or params[i] == '--fasta_dir':
-        fasta = params[i+1]
+        fasta_dir = params[i+1]
 
 # Confirm parameters set
 if fasta_dir == None:
