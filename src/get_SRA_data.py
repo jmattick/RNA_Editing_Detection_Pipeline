@@ -26,5 +26,5 @@ else:
                 SRR.append(line.strip()) #add each accession number to SRR list
 
     for acc in SRR: #loop through acc numbers
-        os.system('fastq-dump -O ' + str(out_path) + ' -I --split-files ' + str(acc)) #call fastq-dump command to output fastq files in data folder
+        os.system('fastq-dump -O ' + str(out_path) + ' --split-files ' + str(acc)) #call fastq-dump command to output fastq files in data folder
 
