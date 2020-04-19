@@ -38,6 +38,6 @@ else:
             r = str(sam_dir) + str(base) + '.sam' #path to sam file
             outname = base.split('/')[-1] #get name of the sam file
             cmd = 'samtools view -b -F4 -L ' + str(output_dir) + chrNum + '.bed ' + '-o' + str(output_dir) + chrNum + '.bam -@ 4 ' + r
-			os.system(cmd)
-			os.system('samtools sort ' + str(output_dir) + chrNum + '.bam > ' + str(output_dir) + 'sorted_' + chrNum + '.bam')
-			os.system('samtools index ' + str(output_dir) + 'sorted_' + chrNum + '.bam')
+	    os.system(cmd)
+	    os.system('samtools sort ' + str(output_dir) + chrNum + '.bam > ' + str(output_dir) + 'sorted_' + chrNum + '.bam')
+	    os.system('samtools index ' + str(output_dir) + 'sorted_' + chrNum + '.bam')
