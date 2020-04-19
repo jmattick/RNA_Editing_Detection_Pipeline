@@ -26,7 +26,7 @@ else:
             r1 = str(fastq_dir) + str(base) + '_1.fastq' #path to read 1
             r2 = str(fastq_dir) + str(base) + '_2.fastq' #path to read 2
             outname = base.split('/')[-1] #get name of file
-            cmd = 'bwa mem -t 4 ' + str(fasta_dir) + ' -Y ' + r1 + ' ' + r2 + ' > ' + str(fastq_dir) + str(outname) + '.sam' # BWA command
+            cmd = 'bwa mem -t 4 ' + str(fasta_dir) + ' -Y ' + r1 + ' ' + r2 + ' > ' + str(fasta_dir) + str(outname) + '.sam' # BWA command
             print('Aligning reads with BWA')
             print(cmd)
             os.system(cmd)
