@@ -27,9 +27,9 @@ else:
 	for file in os.listdir(str(genome_dir)): #loop through files in data directory
 		if file.endswith('.fai'): #if file is fai file
 			base = file.split('.fai')[0] #get basename of file
-            r = str(genome_dir) + str(base) + '.fai' #path to fai file
-            cmd = 'awk \'/^' + chrNum + '\t/ {printf(\"%s\t0\t%s\n\",$1,$2);}\' ' + r + ' > ' + str(output_dir) + chrNum + '.bed'
-            os.system(cmd)
+			r = str(genome_dir) + str(base) + '.fai' #path to fai file
+			cmd = 'awk \'/^' + chrNum + '\t/ {printf(\"%s\t0\t%s\n\",$1,$2);}\' ' + r + ' > ' + str(output_dir) + chrNum + '.bed'
+			os.system(cmd)
 
 	
 	for file in os.listdir(str(fastq_dir)): #loop through files in data directory
