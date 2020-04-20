@@ -25,19 +25,18 @@ if genome_dir == None or fasta_dir == None or chrNum == None or output_dir == No
 
 else:
     for file in os.listdir(str(genome_dir)): #loop through files in data directory
-    	if file.endswith('.fai'): #if file is fai file
+        if file.endswith('.fai'): #if file is fai file
 			base = file.split('.fai')[0] #get basename of file
 			r = str(genome_dir) + str(base) + '.fai' #path to fai file
 			cmd = 'awk \'/^' + chrNum + '\t/ {printf(\"%s\t0\t%s\n\",$1,$2);}\' ' + r + ' > ' + str(output_dir) + chrNum + '.bed'
 			os.system(cmd)
 
-	
-	for file in os.listdir(str(fastq_dir)): #loop through files in data directory
-        	if file.endswith('.sam'): #if file is sam file
-				base = file.split('.sam')[0] #get basename of file
-				r = str(fastq_dir) + str(base) + '.sam' #path to sam file
-				outname = base.split('/')[-1] #get name of the sam file
-				cmd = 'samtools view -b -F4 -L ' + str(output_dir) + chrNum + '.bed ' + '-o' + str(output_dir) + chrNum + '.bam -@ 4 ' + r
-				os.system(cmd)
-				os.system('samtools sort ' + str(output_dir) + chrNum + '.bam > ' + str(output_dir) + 'sorted_' + chrNum + '.bam')
-				os.system('samtools index ' + str(output_dir) + 'sorted_' + chrNum + '.bam')
+    for file in os.listdir(str(fastq_dir)): #loop through files in data directory
+        if file.endswith('.sam'): #if file is sam file
+			base = file.split('.sam')[0] #get basename of file
+			r = str(fastq_dir) + str(base) + '.sam' #path to sam file
+			outname = base.split('/')[-1] #get name of the sam file
+			cmd = 'samtools view -b -F4 -L ' + str(output_dir) + chrNum + '.bed ' + '-o' + str(output_dir) + chrNum + '.bam -@ 4 ' + r
+			os.system(cmd)
+			os.system('samtools sort ' + str(output_dir) + chrNum + '.bam > ' + str(output_dir) + 'sorted_' + chrNum + '.bam')
+			os.system('samtools index ' + str(output_dir) + 'sorted_' + chrNum + '.bam')
