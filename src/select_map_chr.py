@@ -20,7 +20,7 @@ for i in range(len(params)-1): #loop through parameters
     elif params[i] == '-chr' or params[i] == '--chrNum': #if chromosome number is given
     	chrNum = params[i+1]
 
-if genome_dir == None or fasta_dir == None or chrNum == None or output_dir == None:
+if genome_dir == None or fastq_dir == None or chrNum == None or output_dir == None:
     print('Error: Invalid input parameters. \nSet fai directory with -g or --genome_dir.\nSet WGS fastq file directory with -f or --fastq_dir.\nSet output directory with -o or --out_dir.\nEnter the number of chromosome with -ch or --chrNum (e.g. -ch chr21 or --chrNum chr21).')
 
 else:
