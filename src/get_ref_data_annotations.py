@@ -86,7 +86,8 @@ genome_annotation_gtf_file_name = genome_annotation.split('/')[-1] #gets text af
 genome_annotation_splicesites_file_name = genome_annotation_gtf_file_name.split('.annotation.gtf')[0] + '.splicesites.txt'
 
 os.system("gtf_splicesites" + str(genome_annotation_dir) + str(genome_annotation_gtf_file_name) + " > splicesites")
-os.system('awk -F\" \" \'{split($2,a,\":\"); split(a[2],b,\".\"); if (b[1]>b[3]) print a[1],b[3],b[1],toupper(substr($3,1,1)),\"-\"; else print a[1],b[1],b[3],toupper(substr($3,1,1)),\"+\"}\' ' + str(genome_annotation_dir) + 'splicesites' + ' > ' + str(genome_annotation_dir) + str(genome_annotation_splicesites_file_name)) # creates gtf file  
+cmd = '''awk -F\" \" \'{split($2,a,\":\"); split(a[2],b,\".\"); if (b[1]>b[3]) print a[1],b[3],b[1],toupper(substr($3,1,1)),\"-\"; else print a[1],b[1],b[3],toupper(substr($3,1,1)),\"+\"}\' ''' + str(genome_annotation_dir) + 'splicesites' + ' > ' + str(genome_annotation_dir) + str(genome_annotation_splicesites_file_name)) # creates gtf file  
+subprocess.call(cmd, shell = True)
 
 download_data(rmsk_dir, rmsk)
 
