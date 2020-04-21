@@ -2,6 +2,7 @@
 
 import os 
 import sys
+import subprocess
 
 params = sys.argv # get list of parameters
 
@@ -94,7 +95,8 @@ rmsk_gtf_file_name = rmsk_file_name.split('.txt')[0] + '.gtf' # creates gtf file
 rmsk_sorted_gtf_file_name = rmsk_file_name.split('.txt')[0] + '.sorted.gtf'
 rmsk_sorted_gtf_gz_file_name = rmsk_file_name.split('.txt')[0] + '.sorted.gtf.gz'
 
-os.system('awk \'OFS=\"\t\"{print $6, \"rmsk_hg19\",$12,$7+1,$8,\".\",$10,\".\",\"gene_id \\"\"$11\"\\"; transcript_id \\"\"$13\"\\";\"}\' ' + str(rmsk_dir) + str(rmsk_file_name) + " > " + str(rmsk_dir) + str(rmsk_gtf_file_name)) # creates gtf file  
+cmd = '''awk \'OFS=\"\t\"{print $6, \"rmsk_hg19\",$12,$7+1,$8,\".\",$10,\".\",\"gene_id \\"\"$11\"\\"; transcript_id \\"\"$13\"\\";\"}\' ''' + str(rmsk_dir) + str(rmsk_file_name) + " > " + str(rmsk_dir) + str(rmsk_gtf_file_name)
+subprocess.call(cmd, shell = True) # creates gtf file  
 os.system("sort -k1,1 -k4,4n " + str(rmsk_dir) + str(rmsk_gtf_file_name) + ' > ' + str(rmsk_dir) + str(rmsk_sorted_gtf_file_name)) # creates sorted gtf file
 os.system("bgzip -p gff " + str(rmsk_dir) + str(rmsk_sorted_gtf_file_name))
 os.system("tabix -p gff " + str(rmsk_dir) + str(rmsk_sorted_gtf_gz_file_name))
