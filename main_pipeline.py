@@ -4,6 +4,10 @@
 import os
 import sys
 
+#path to main script
+wd = "/home/jmattick/RNA_Editing_Detection_Pipeline/"
+os.system('echo' + wd)
+
 # get parameters
 params = sys.argv
 
@@ -58,10 +62,27 @@ reference = output + 'reference/' # set path to directory containing reference i
 star_index = reference + 'STAR_index/' # set path to directory containng star index
 redi_table = output + 'redi_table/' # set path to directory containing reditools output tables
 
+# Make directories
+def mk_dir(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+mk_dir(rna_fastq)
+mk_dir(rna_fastq_trimmed)
+mk_dir(rna_bam)
+mk_dir(dna_bam)
+mk_dir(dna_fastq)
+mk_dir(fastqc)
+mk_dir(reference)
+mk_dir(star_index)
+mk_dir(redi_table)
+
+
 # Download Reference Data
-cmd  = 'python3 src/get_reference_data.py -i ' + str(ref_urls) + ' -o ' + str(reference) # command to download reference data
+cmd  = 'python3 ' + str(wd) + 'src/get_ref_data_annotations.py -i ' + str(ref_urls) + ' -o ' + str(reference) # command to download reference data
 os.system('date') # print date
 os.system('echo ' + cmd)
+os.system(cmd)
 
 # Update directory paths
 genome = reference + 'genome/' # set path to genome directory
@@ -72,44 +93,52 @@ dbSNP = reference + 'dbSNP/'
 rediportal = reference + 'rediportal_db/'
 
 # Download RNAseq Reads
-cmd = 'python3 src/get_SRA_reads.py -a ' + str(rna_acc) + ' -o ' + str(rna_fastq)
+cmd = 'python3 ' + str(wd) + 'src/get_SRA_reads.py -a ' + str(rna_acc) + ' -o ' + str(rna_fastq)
 os.system('date')
 os.system('echo ' + cmd)
+os.system(cmd)
 
 # Download DNAseq Reads
-cmd = 'python3 src/get_SRA_reads.py -a ' + str(dna_acc) + ' -o ' + str(dna_fastq)
+cmd = 'python3 ' + str(wd) + 'src/get_SRA_reads.py -a ' + str(dna_acc) + ' -o ' + str(dna_fastq)
 os.system('date')
 os.system('echo ' + cmd)
+os.system(cmd)
 
 # Quality Check RNAseq Reads
-cmd = 'python3 src/fastqc.py -f ' + str(rna_fastq) + ' -o ' + str(fastqc)
+cmd = 'python3 ' + str(wd) + 'src/fastqc.py -f ' + str(rna_fastq) + ' -o ' + str(fastqc)
 os.system('date')
 os.system('echo ' + cmd)
+os.system(cmd)
 
 # Quality Check DNAseq Reads
-cmd = 'python3 src/fastqc.py -f ' + str(dna_fastq) + ' -o ' + str(fastqc)
+cmd = 'python3 ' + str(wd) + 'src/fastqc.py -f ' + str(dna_fastq) + ' -o ' + str(fastqc)
 os.system('date')
 os.system('echo ' + cmd)
+os.system(cmd)
 
 # Index genome BWA
-cmd = 'python3 src/index_genome_bwa.py ' + str(genome) + '*.fa'
+cmd = 'python3 ' + str(wd) + 'src/index_genome_bwa.py ' + str(genome) + '*.fa'
 os.system('date')
 os.system('echo ' + cmd)
+os.system(cmd)
 
 # Index genome STAR
-cmd = 'python3 src/index_genome_STAR.py -f ' + str(genome) + '*.fa -a ' + str(genome_annotation) + ' -o ' + str(star_index)
+cmd = 'python3 ' + str(wd) + 'src/index_genome_STAR.py -f ' + str(genome) + '*.fa -a ' + str(genome_annotation) + ' -o ' + str(star_index)
 os.system('date')
 os.system('echo ' + cmd)
+os.system(cmd)
 
 # Align Reads BWA
-cmd = 'python3 src/align_BWA.py -fq ' + str(dna_fastq) + ' -fa ' + str(genome)
+cmd = 'python3 ' + str(wd) + 'src/align_BWA.py -fq ' + str(dna_fastq) + ' -fa ' + str(genome)
 os.system('date')
 os.system('echo ' + cmd)
+os.system(cmd)
 
 # Select Specific Chromosome
-cmd = 'python3 src/select_map_chr.py -g ' + str(genome) + ' -s ' + str(dna_fastq) + ' -o ' + str(dna_bam) + ' -chr ' + str(chrNum)
+cmd = 'python3 ' + str(wd) + 'src/select_map_chr.py -g ' + str(genome) + ' -s ' + str(dna_fastq) + ' -o ' + str(dna_bam) + ' -chr ' + str(chrNum)
 os.system('date')
 os.system('echo ' + cmd)
+os.system(cmd)
 
 # Get Chromosome coordinates
 def get_coord(path, name):
@@ -122,30 +151,34 @@ def get_coord(path, name):
         return formatted
 
 # Quality trim RNA Reads
-cmd = 'python3 src/fastp.py -f ' + str(rna_fastq) + ' -o ' + str(rna_fastq_trimmed) 
+cmd = 'python3 ' + str(wd) + 'src/fastp.py -f ' + str(rna_fastq) + ' -o ' + str(rna_fastq_trimmed) 
 os.system('date')
 os.system('echo ' + cmd)
+os.system(cmd)
 
 # Align Reads STAR
-cmd = 'python3 src/align_STAR.py -f ' + str(rna_fastq_trimmed) + ' -g ' + str(star_index) + ' -o ' + str(rna_bam)
+cmd = 'python3 ' + str(wd) + 'src/align_STAR.py -f ' + str(rna_fastq_trimmed) + ' -g ' + str(star_index) + ' -o ' + str(rna_bam)
 os.system('date')
 os.system('echo ' + cmd)
+os.system(cmd)
 
 # Infer Strand Orientation
-cmd = 'python3 src/infer_strand_direction.py -d ' + str(rna_bam) + ' -r ' + str(output) + 'strand_detection/'
+cmd = 'python3 ' + str(wd) + 'src/infer_strand_direction.py -d ' + str(rna_bam) + ' -r ' + str(output) + 'strand_detection/'
 os.system('date')
 os.system('echo ' + cmd)
+#printed = os.popen(cmd).read()
 
-printed = os.popen('python3 src/infer_strand_direction.py -d /data/jmattick/RNA_editing/STAR/NA12878/ -r /data/jmattick/RNA_editing/reference/strand_detection/hg19_RefSeq.bed').read()
-
-printed = printed.split('\n')
-print("printed: ")
-print('from py: ' + str(printed))
+#printed = printed.split('\n')
+#print("printed: ")
+#print('from py: ' + str(printed))
 
 # Run REDItoolDnaRNA.py
-cmd = 'python3 REDItools_python3/main/REDItoolDnaRna.py -r ' + str(rna_bam) + ' -d ' + str(dna_bam) + '*.bam -o ' + str(redi_table) + ' -g ' + str(genome) + ' -chr ' + str(get_coord(dna_bam, chrNum)) 
-os.system('date')
-os.system('echo ' + cmd)
+#cmd = 'python3 src/run_REDItoolDnaRna.py -r ' + str(rna_bam) + ' -d ' + str(dna_bam) + '*.bam -o ' + str(redi_table) + ' -g ' + str(genome) + ' -chr ' + str(get_coord(dna_bam, chrNum)) 
+#os.system('date')
+#os.system('echo ' + cmd)
+#os.system(cmd)
+
+
 
 
 
