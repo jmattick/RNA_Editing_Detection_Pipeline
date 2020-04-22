@@ -86,7 +86,7 @@ genome_annotation_gtf_file_name = genome_annotation.split('/')[-1] #gets text af
 genome_annotation_splicesites_file_name = genome_annotation_gtf_file_name.split('.annotation.gtf')[0] + '.splicesites.txt'
 
 os.system("gtf_splicesites" + str(genome_annotation_dir) + str(genome_annotation_gtf_file_name) + " > splicesites")
-cmd = '''awk -F\" \" \'{split($2,a,\":\"); split(a[2],b,\".\"); if (b[1]>b[3]) print a[1],b[3],b[1],toupper(substr($3,1,1)),\"-\"; else print a[1],b[1],b[3],toupper(substr($3,1,1)),\"+\"}\' ''' + str(genome_annotation_dir) + 'splicesites' + ' > ' + str(genome_annotation_dir) + str(genome_annotation_splicesites_file_name)) # creates gtf file  
+cmd = '''awk -F\" \" \'{split($2,a,\":\"); split(a[2],b,\".\"); if (b[1]>b[3]) print a[1],b[3],b[1],toupper(substr($3,1,1)),\"-\"; else print a[1],b[1],b[3],toupper(substr($3,1,1)),\"+\"}\' ''' + str(genome_annotation_dir) + 'splicesites' + ' > ' + str(genome_annotation_dir) + str(genome_annotation_splicesites_file_name) # creates gtf file  
 subprocess.call(cmd, shell = True)
 
 download_data(rmsk_dir, rmsk)
@@ -120,7 +120,7 @@ rediportal_db_file_name = rediportal_db.split('/')[-1] #gets text after last / i
 atlas_gtf_file_name = 'atlas.gtf'
 atlas_gtf_gz_file_name = atlas_gtf_file_name + '.gz'
 
-cmd = '''awk \'OFS=\"\t\"{sum+=1; print $1,\"rediportal\",\"ed\",$2,$2,\".\",$5,\".\"gene_id \\"\"sum\"\\"; transcript_id \\"\"sum\"\\";\"}\' ''' + str(rediportal_db_dir) + str(rediportal_db_file_name) + " > " + str(rediportal_db_dir) + str(atlas_gtf_file_name))
+cmd = '''awk \'OFS=\"\t\"{sum+=1; print $1,\"rediportal\",\"ed\",$2,$2,\".\",$5,\".\"gene_id \\"\"sum\"\\"; transcript_id \\"\"sum\"\\";\"}\' ''' + str(rediportal_db_dir) + str(rediportal_db_file_name) + " > " + str(rediportal_db_dir) + str(atlas_gtf_file_name)
 subprocess.call(cmd, shell = True)
 os.system('python3 REDItools_python3/accessory/rediportal2recoding.py' + ' ' + str(rediportal_db_dir) + str(rediportal_db_file_name) + ' > ' + str(rediportal_db_dir) + 'atlas_recoding.gff')
 os.system("sort -k1,1 -k4,4n " + str(rediportal_db_dir) + 'atlas_recoding.gff' + ' > ' + str(rediportal_db_dir) + 'srtd_atlas_recoding.gff') # creates sorted gtf file
