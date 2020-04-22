@@ -883,7 +883,7 @@ if gblatr:
 def exploreBAM(myinput):
 	isgbam=1
 	inputs=myinput.split('$')
-	chr,bamfile,start_region,lenregion,suff_=inputs[0],inputs[1],int(inputs[2]),int(inputs[3]),inputs[4]
+	chr,bamfile,start_region,lenregion,suff_=inputs[0],inputs[1],int(float(inputs[2])),int(float(inputs[3])),inputs[4]
 	if chr not in dgdic: isgbam=0
 	outfile=os.path.join(outfolder,'table_%s'%(suff_))
 	if slist:
