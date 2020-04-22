@@ -109,7 +109,7 @@ dbSNP_gtf_file_name = dbSNP_file_name.split('.txt')[0] + '.gtf' # creates gtf fi
 dbSNP_sorted_gtf_file_name = dbSNP_file_name.split('.txt')[0] + '.sorted.gtf'
 dbSNP_sorted_gtf_gz_file_name = dbSNP_file_name.split('.txt')[0] + '.sorted.gtf.gz'
 
-cmd = '''awk \'OFS=\"\t\"{if ($11==\"genomic\" && $12==\"single\") print $2,\"ucsc_snp151_hg19\",\"snp\",$4,$4,\".\",$7,\".\",\"gene_id \\"\"$5\"\\"; transcript_id \\"\"$5\"\\";\"}\' ''' + str(dbSNP_dir) + str(dbSNP_file_name) + " > " + str(dbSNP_dir) + str(dbSNP_sorted_gtf_file_name)
+cmd = '''awk \'OFS=\"\t\"{if ($11==\"genomic\" && $12==\"single\") print $2,\"ucsc_snp151_hg19\",\"snp\",$4,$4,\".\",$7,\".\",\"gene_id \\"\"$5\"\\"; transcript_id \\"\"$5\"\\";\"}\' ''' + str(dbSNP_dir) + str(dbSNP_file_name) + " > " + str(dbSNP_dir) + str(dbSNP_gtf_file_name)
 subprocess.call(cmd, shell = True) # creates gtf file  
 os.system("sort -k1,1 -k4,4n " + str(dbSNP_dir) + str(dbSNP_gtf_file_name) + ' > ' + str(dbSNP_dir) + str(dbSNP_sorted_gtf_file_name)) # creates sorted gtf file
 os.system("bgzip " + str(dbSNP_dir) + str(dbSNP_sorted_gtf_file_name))
