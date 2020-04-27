@@ -5,8 +5,8 @@ import os
 import sys
 
 #path to main script
-wd = "/home/jmattick/RNA_Editing_Detection_Pipeline/"
-os.system('echo' + wd)
+wd = sys.path[0]  # get script location
+os.system('echo ' + wd)
 
 # get parameters
 params = sys.argv
@@ -32,7 +32,7 @@ for i in range(len(params)-1):
         dna_acc = params[i+1] # set dna_acc
     elif params[i] == '-chr' or params[i] == '--chr_num':
         chrNum = params[i+1]
-        
+         
 
 # usage information
 def usage():
@@ -140,16 +140,6 @@ os.system('date')
 os.system('echo ' + cmd)
 os.system(cmd)
 
-# Get Chromosome coordinates
-def get_coord(path, name):
-    with open(str(path) + str(name) + '.bed', 'r') as f:
-        line = f.readline()
-        items = line.strip().split()
-        formatted = items.pop(0)
-        coord = '-'.join(items)
-        formatted = formatted + ':' + coord
-        return formatted
-
 # Quality trim RNA Reads
 cmd = 'python3 ' + str(wd) + 'src/fastp.py -f ' + str(rna_fastq) + ' -o ' + str(rna_fastq_trimmed) 
 os.system('date')
@@ -166,19 +156,5 @@ os.system(cmd)
 cmd = 'python3 ' + str(wd) + 'src/infer_strand_direction.py -d ' + str(rna_bam) + ' -r ' + str(output) + 'strand_detection/'
 os.system('date')
 os.system('echo ' + cmd)
-#printed = os.popen(cmd).read()
-
-#printed = printed.split('\n')
-#print("printed: ")
-#print('from py: ' + str(printed))
-
-# Run REDItoolDnaRNA.py
-#cmd = 'python3 src/run_REDItoolDnaRna.py -r ' + str(rna_bam) + ' -d ' + str(dna_bam) + '*.bam -o ' + str(redi_table) + ' -g ' + str(genome) + ' -chr ' + str(get_coord(dna_bam, chrNum)) 
-#os.system('date')
-#os.system('echo ' + cmd)
-#os.system(cmd)
-
-
-
-
+os.system(cmd)
 
