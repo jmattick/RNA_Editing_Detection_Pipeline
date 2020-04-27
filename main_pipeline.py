@@ -5,7 +5,7 @@ import os
 import sys
 
 #path to main script
-wd = sys.path[0]  # get script location
+wd = sys.path[0] + '/'  # get script location
 os.system('echo ' + wd)
 
 # get parameters
