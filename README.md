@@ -1,12 +1,10 @@
 # REDp: RNA Editing Detection Pipeline
 
 ### Description
-RNA editing is a widespread post-transcriptional mechanism able to modify RNA by the host enzymes. Adenosine-to-Inosine (A-to-I) conversion, one of many RNA editing mechanisms, has been proven to play a pleiotropic role in neuron development and neurological diseases (Figure 1). Detecting the A-to-I event in a large-scale transcriptomic dataset is a very compelling and however, challenging task. Previously a computational tool called REDItools was developed to detect the RNA editing in RNA-seq data (Figure 2). However, this tool requires many preparational files and only accepts sequence data that is pre-processed. REDp is a python wrapper that automate the entire process, from downloading the required sequence data to produce the final report (Figure 3). This pipeline will enable users who have no experience in using Linux command lines to use this tool. In addition, the scripts of REDItools were converted from python2 to python3.  
+RNA editing is a widespread post-transcriptional mechanism able to modify RNA by the host enzymes. Adenosine-to-Inosine (A-to-I) conversion, one of many RNA editing mechanisms, has been proven to play a pleiotropic role in neuron development and neurological diseases (Figure 1). Detecting the A-to-I event in a large-scale transcriptomic dataset is a very compelling and however, challenging task. Previously a computational tool called REDItools was developed to detect the RNA editing in RNA-seq data (Figure 2). However, this tool requires many preparational files and only accepts sequence data that is pre-processed. REDp is a python wrapper that helps automate the process, from downloading the required sequence data to producing the final report. This pipeline will enable users who have limited experience in using Linux command lines to use this tool. In addition, the scripts of REDItools were converted from python2 to python3.  
 ![alt text](https://github.com/jmattick/RNA_Editing_Detection_Pipeline/blob/master/images/Slide1.jpeg "Logo Title Text 1")
 
 ![alt text](https://github.com/jmattick/RNA_Editing_Detection_Pipeline/blob/master/images/Slide2.jpeg "Logo Title Text 1")
-
-![alt text](https://github.com/jmattick/RNA_Editing_Detection_Pipeline/blob/master/images/Slide3.jpeg "Logo Title Text 1")
 
 ### Software/Tools needed
 * Linux/Unix
