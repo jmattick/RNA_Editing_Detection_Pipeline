@@ -121,6 +121,11 @@ if chrNum is not None:
     os.system('date')
     os.system('echo ' + cmd)
     os.system(cmd)
+else:
+    cmd = 'python3 ' + str(wd) + 'src/format_bwa_output.py -g ' + str(genome_dir) + ' -f ' + str(dna_fasstq) + ' -o ' + str(dna_bam)
+    os.system('date')
+    os.system('echo ' + cmd)
+    os.system(cmd)
 
 # Quality trim RNA Reads
 cmd = 'python3 ' + str(wd) + 'src/fastp.py -f ' + str(rna_fastq) + ' -o ' + str(rna_fastq_trimmed) 
