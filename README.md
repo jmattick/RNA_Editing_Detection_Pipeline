@@ -21,42 +21,101 @@ RNA editing is a widespread post-transcriptional mechanism able to modify RNA by
 * REDItools
 * REDIportal database
 
-### Run Pipeline:
-1. Create a tab-delimited file containing the urls to all required reference data keeping the first column identical to the example.
+### Run Test datasets for REDp: RNA Editing Pipeline 
 
-Example ``reference_data.txt``:
-```
-genome  ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/GRCh37_mapping/GRCh37.primary_assembly.genome.fa.gz
-genome_annotation       ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/GRCh37_mapping/gencode.v30lift37.annotation.gtf.gz
-strand_detection        https://sourceforge.net/projects/rseqc/files/BED/Human_Homo_sapiens/hg19_RefSeq.bed.gz
-rmsk    http://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/rmsk.txt.gz
-dbSNP   http://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/snp151.txt.gz
-rediportal_db   http://srv00.recas.ba.infn.it/webshare/rediportalDownload/table1_full.txt.gz
-```
-2. Create a txt file containing a list of RNA SRA accession numbers.
+A test dataset has been provided in test_data.
 
-Example ``rna_acc.txt``:
-```
-SRR1258218,SRR1258219
-```
-3. Create a txt file containing a list of DNA SRA accession numbers.
+Download the reference genome:
 
-Example ``dna_acc.txt``:
 ```
-ERR262997
+wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/GRCh37_mapping/GRCh37.primary_assembly.genome.fa.gz
+gunzip GRCh37.primary_assembly.genome.fa.gz
 ```
-4. Run 'main_pipeline.py' to run through the entire pipeline.
 
-Parameters:
-* -ru or --reference_urls: path to tab delimited file containing reference data urls
-* -o or --output: path to output directory
-* -ra or --rna_acc: path to file containing RNA SRA accession numbers
-* -da or --dna_acc: path to file containing DNA SRA accession numbers
-* -chr or --chr_num: chromosome to filter (must be in format chr#)
 
-Example of running the pipeline:
+Download the genome annotation:
+
 ```
-nohup python3 main_pipeline.py -ru reference_data.txt -o REDp_results/ -ra rna_acc.txt -da dna_acc.txt -chr chr4 &
+wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_30/GRCh37_mapping/gencode.v30lift37.annotation.gtf.gz
+gunzip gencode.v30lift37.annotation.gtf.gz
 ```
+
+### Test fastq processing
+
+Test the fastq processing pipline using provided dna and rna fastq files. Both samples are from the NA12878 cell line under accessions SRR1258218 and ERR262997. The fastq files are a subsample of the full dataset because of the large size of the original.
+
+The fastq_alignment.py script will quality check and trim reads. It will also create genome indices for STAR and BWA before aligning the reads. The output of this script should be suitable as input for REDItools.  
+
+Parameters: 
+
+- `-g` or `--genome`: path to genome fasta file
+- `-a` or `--genome_ann`: path to genome annotation file
+- `-r` or `--rna_fastq`: path to directory containing RNA fastq files
+- `-d` or `--dna_fastq`: path to directory containing DNA fastq files
+- `-o` or `--output`: path to output directory
+- `-chr` or `--chrNum`: chromosome location to output (format `-chr chrX`)
+
+Example Run: 
+```
+nohup python3 fastq_alignment.py -g ../test_dataset/genome/GRCh37.primary_assembly.genome.fa -a ../test_dataset/genome_annotation/gencode.v30lift37.annotation.gtf -r ../test_dataset/rna_fastq/ -d ../test_dataset/dna_fastq/ -o output_directory/ &
+```
+
+Three additional files have been provided containing the RNA accession numbers, the DNA accession numbers, and a file containing the urls of the reference data. The next two steps are not required to test the fastq processing pipeline but can be useful for testing other datasets. 
+
+Download Reference data: 
+
+```
+nohup python3 get_ref_data_annotation.py -i reference_data.txt -o output_path &
+```
+
+Download fastq files for DNA or RNAseq :
+
+```
+nohup python3 get_SRA_data.py -a acc.txt -o output_path &
+```
+
+### Test REDItools_python3 scripts
+
+Python3 update to the original REDItools scripts found at https://github.com/BioinfoUNIBA/REDItools
+
+Test the REDItools python3 scripts using the dataset provided by Lo Giudice et al:
+
+http://srv00.recas.ba.infn.it/webshare/testREDItools.tar.gz
+
+After decompressing the file, use the following commands to test the scripts:
+
+Compare DNA and  RNA using the REDItoolDnaRna.py script. 
+
+```
+python3 REDItools_python3/main/REDItoolDnaRna.py -i rna.bam -j dna.bam -f reference.fa -o reditool-test -c 10,1 -q 25,25 -m 20,20 -s 2 -g 1 -u -a 6-0 -v 2 -n0.0 -N0.0 -V
+```
+
+An output table will be created with the name outTable_XXXXX with XXXXX representing a random number sequence. Use the generated file name for the remaining commands.
+
+Select positions with variants by running the selectPositions.py script 
+
+```
+nohup python3 REDItools_python3/accessory/selectPositions.py -i outTable_XXXXX -d 12 -c 2 -C 10 -v 2 -V 0 -f 0.1 -F 1.0 -e -u -o candidates.txt&
+```
+
+Annotate positions with information from repeat masker.
+
+```
+nohup python3 REDItools_python3/accessory/AnnotateTable.py -a rmsk.gtf.gz -i candidates.txt -u -c 1,2,3 -n RepMask -o candidates.rmsk.txt &
+```
+
+Filter annotated candidates.
+
+```
+nohup python3 REDItools_python3/accessory/FilterTable.py -i candidates.rmsk.txt -f rmsk.gtf.gz -F SINE -E -o candidates.rmsk.alu.txt -p &
+```
+Annotate candidates with gene information from RefSeq. 
+
+```
+nohup python3 REDItools_python3/accessory/AnnotateTable.py -a refGene.sorted.gtf.gz -i candidates.rmsk.alu.txt -u -c 1,2 -n RefSeq -o candidates.rmsk.alu.ann.txt &
+```
+
+The result is an annotated table containing RNA editing sites in the provided dataset. 
+
 ### Run individual step separately:
-* The usage and required parameters of individual steo are available at https://github.com/jmattick/RNA_Editing_Detection_Pipeline/wiki.
+* The usage and required parameters of individual steps are available at https://github.com/jmattick/RNA_Editing_Detection_Pipeline/wiki.
