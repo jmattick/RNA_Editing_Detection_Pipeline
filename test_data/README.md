@@ -51,7 +51,12 @@ Test the REDItools python3 scripts using the dataset provided by Lo Giudice et a
 
 http://srv00.recas.ba.infn.it/webshare/testREDItools.tar.gz
 
-After decompressing the file, use the following commands to test the scripts:
+Use the following commands to test the scripts:
+
+Unzip dataset:
+```
+tar xvzf testREDItools.tar.gz
+```
 
 Compare DNA and  RNA using the REDItoolDnaRna.py script. 
 
