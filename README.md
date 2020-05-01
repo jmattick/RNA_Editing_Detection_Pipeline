@@ -80,7 +80,12 @@ Test the REDItools python3 scripts using the dataset provided by Lo Giudice et a
 
 http://srv00.recas.ba.infn.it/webshare/testREDItools.tar.gz
 
-After decompressing the file, use the following commands to test the scripts:
+Use the following commands to test the scripts:
+
+Unzip dataset:
+```
+tar xvzf testREDItools.tar.gz
+```
 
 Compare DNA and  RNA using the REDItoolDnaRna.py script. 
 
@@ -90,7 +95,7 @@ python3 REDItools_python3/main/REDItoolDnaRna.py -i rna.bam -j dna.bam -f refere
 
 An output table will be created with the name outTable_XXXXX with XXXXX representing a random number sequence. Use the generated file name for the remaining commands.
 
-Select positions with variants by running the selectPositions.py script 
+Select positions with variants by running the selectPositions.py script within the output directory. 
 
 ```
 nohup python3 REDItools_python3/accessory/selectPositions.py -i outTable_XXXXX -d 12 -c 2 -C 10 -v 2 -V 0 -f 0.1 -F 1.0 -e -u -o candidates.txt&
@@ -99,18 +104,18 @@ nohup python3 REDItools_python3/accessory/selectPositions.py -i outTable_XXXXX -
 Annotate positions with information from repeat masker.
 
 ```
-nohup python3 REDItools_python3/accessory/AnnotateTable.py -a rmsk.gtf.gz -i candidates.txt -u -c 1,2,3 -n RepMask -o candidates.rmsk.txt &
+nohup python3 REDItools_python3/accessory/AnnotateTable.py -a ../../rmsk.gtf.gz -i candidates.txt -u -c 1,2,3 -n RepMask -o candidates.rmsk.txt &
 ```
 
 Filter annotated candidates.
 
 ```
-nohup python3 REDItools_python3/accessory/FilterTable.py -i candidates.rmsk.txt -f rmsk.gtf.gz -F SINE -E -o candidates.rmsk.alu.txt -p &
+nohup python3 REDItools_python3/accessory/FilterTable.py -i candidates.rmsk.txt -f ../../rmsk.gtf.gz -F SINE -E -o candidates.rmsk.alu.txt -p &
 ```
 Annotate candidates with gene information from RefSeq. 
 
 ```
-nohup python3 REDItools_python3/accessory/AnnotateTable.py -a refGene.sorted.gtf.gz -i candidates.rmsk.alu.txt -u -c 1,2 -n RefSeq -o candidates.rmsk.alu.ann.txt &
+nohup python3 REDItools_python3/accessory/AnnotateTable.py -a ../../refGene.sorted.gtf.gz -i candidates.rmsk.alu.txt -u -c 1,2 -n RefSeq -o candidates.rmsk.alu.ann.txt &
 ```
 
 The result is an annotated table containing RNA editing sites in the provided dataset. 
