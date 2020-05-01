@@ -55,7 +55,7 @@ Parameters:
 
 Example Run: 
 ```
-nohup python3 fastq_alignment.py -g ../test_dataset/genome/GRCh37.primary_assembly.genome.fa -a ../test_dataset/genome_annotation/gencode.v30lift37.annotation.gtf -r ../test_dataset/rna_fastq/ -d ../test_dataset/dna_fastq/ -o output_directory/ &
+nohup python3 fastq_alignment.py -g test_data/GRCh37.primary_assembly.genome.fa -a test_data/gencode.v30lift37.annotation.gtf -r test_data/rna_fastq/ -d test_data/dna_fastq/ -o output_directory/ &
 ```
 
 Three additional files have been provided containing the RNA accession numbers, the DNA accession numbers, and a file containing the urls of the reference data. The next two steps are not required to test the fastq processing pipeline but can be useful for testing other datasets. 
